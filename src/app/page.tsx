@@ -1,19 +1,18 @@
 import { FC } from 'react'
 import Link from 'next/link'
 import { Button } from 'antd'
-import { absoluteCenter } from '@/styles'
 import classnames from '@/utils/classnames'
-import { sleep } from '@/utils/sleep'
 
-const Page: FC = async () => {
-  await sleep(2000)
-  return (
-    <Link href='/test1'>
-      <Button type='primary' className={classnames(absoluteCenter, 'bg-black')}>
-        Test Page
+const projects = ['test1']
+
+const Page: FC = () => {
+  return projects.map((name) => (
+    <Link href={name} key={name}>
+      <Button type='primary' className={classnames('bg-black')}>
+        {name}
       </Button>
     </Link>
-  )
+  ))
 }
 
 export default Page

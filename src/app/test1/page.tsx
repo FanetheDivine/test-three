@@ -1,8 +1,17 @@
+'use client'
+
 import { FC } from 'react'
-import Link from 'next/link'
+import { Canvas } from '@react-three/fiber'
 
 const Page: FC = () => {
-  return <Link href='/'>to home</Link>
+  return (
+    <Canvas>
+      <mesh>
+        <boxGeometry />
+        <meshStandardMaterial />
+      </mesh>
+    </Canvas>
+  )
 }
 
 export default Page
