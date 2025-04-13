@@ -4,7 +4,7 @@ import { AntdProvider } from '@/lib/AntdProvider'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Next14 项目模板',
+  title: '学习three.js',
 }
 
 const RootLayout: FC<PropsWithChildren> = (props) => {
