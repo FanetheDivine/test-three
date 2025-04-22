@@ -28,6 +28,8 @@ type ThreeArgs = {
   size: number[]
   /** 颜色，表示材质的颜色值（十六进制字符串，例如 #4096ff） */
   color: string
+  /** 环境光强度，控制场景中的环境光亮度 */
+  ambientLightIntensity: number
   /** 方向光强度，控制方向光的亮度 */
   directionalLightIntensity: number
   /** 方向光位置，控制方向光的 X、Y、Z 坐标 */
@@ -67,6 +69,7 @@ const Controls: FC<{ value: ThreeArgs; onChange: Updater<ThreeArgs> }> = (
     { label: '金属度', key: 'metalness', min: 0, max: 1 },
     { label: '清漆强度', key: 'clearcoat', min: 0, max: 1 },
     { label: '清漆粗糙度', key: 'clearcoatRoughness', min: 0, max: 1 },
+    { label: '环境光强度', key: 'ambientLightIntensity', min: 0, max: 10 },
     { label: '方向光强度', key: 'directionalLightIntensity', min: 0, max: 10 },
     {
       label: '方向光位置 (X)',
@@ -96,7 +99,7 @@ const Controls: FC<{ value: ThreeArgs; onChange: Updater<ThreeArgs> }> = (
     }
   }
   return (
-    <div className='min-w-max max-h-full overflow-auto flex flex-col p-2 gap-2'>
+    <div className='w-max max-h-full overflow-auto flex flex-col p-2 gap-2'>
       {controls.map((item) => {
         return (
           <span key={item.key} className='flex items-center gap-2'>
@@ -191,6 +194,7 @@ const Page: FC = () => {
     meshPosition: [0, 0, 0],
     size: [2, 2, 2],
     color: '#4096ff',
+    ambientLightIntensity: 1,
     directionalLightIntensity: 1,
     directionalLightPosition: [0, 0, 5],
   })
@@ -200,6 +204,7 @@ const Page: FC = () => {
         <Controls value={args} onChange={setArgs} />
         <div className='flex-1'>
           <Canvas>
+            <ambientLight intensity={args.ambientLightIntensity} />
             <directionalLight
               position={
                 args.directionalLightPosition as [number, number, number]

@@ -14,7 +14,7 @@
     "@ant-design/cssinjs": "^1.23.0",
     "@ant-design/icons": "^5.4.0",
     "@ant-design/nextjs-registry": "^1.0.0",
-    "@react-three/drei": "^10.0.6",
+    "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "8",
     "@types/lodash-es": "^4.17.12",
     "@types/three": "^0.175.0",
