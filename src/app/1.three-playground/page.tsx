@@ -1,13 +1,29 @@
 'use client'
 
-import { FC } from 'react'
+import {
+  FC,
+  forwardRef,
+  ForwardRefExoticComponent,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react'
 import { Line, Text, OrbitControls } from '@react-three/drei'
-import { Canvas } from '@react-three/fiber'
+import { Canvas, useThree } from '@react-three/fiber'
 import { Slider, InputNumber, ColorPicker } from 'antd'
-import { get, set } from 'lodash-es'
+import { debounce, get, set } from 'lodash-es'
+import * as THREE from 'three'
 import { useImmer, Updater } from 'use-immer'
 import { fullContainer } from '@/styles'
 import { cn } from '@/utils/classnames'
+
+type Camera = {
+  /** 摄像头位置 */
+  position: number[]
+  /** 摄像头注视点 */
+  target: number[]
+}
 
 type ThreeArgs = {
   /** 缩放比，用于控制物体整体的缩放 */
@@ -34,9 +50,11 @@ type ThreeArgs = {
   directionalLightIntensity: number
   /** 方向光位置，控制方向光的 X、Y、Z 坐标 */
   directionalLightPosition: number[]
+  /** 摄像机配置 */
+  camera: Camera
 }
 /** 控制器 */
-const Controls: FC<{ value: ThreeArgs; onChange: Updater<ThreeArgs> }> = (
+const ArgsController: FC<{ value: ThreeArgs; onChange: Updater<ThreeArgs> }> = (
   props,
 ) => {
   const controls = [
@@ -89,6 +107,12 @@ const Controls: FC<{ value: ThreeArgs; onChange: Updater<ThreeArgs> }> = (
       min: -10,
       max: 10,
     },
+    { label: '摄像机位置 (X)', key: 'camera.position[0]', min: -10, max: 10 },
+    { label: '摄像机位置 (Y)', key: 'camera.position[1]', min: -10, max: 10 },
+    { label: '摄像机位置 (Z)', key: 'camera.position[2]', min: -10, max: 10 },
+    { label: '摄像机注视点 (X)', key: 'camera.target[0]', min: -10, max: 10 },
+    { label: '摄像机注视点 (Y)', key: 'camera.target[1]', min: -10, max: 10 },
+    { label: '摄像机注视点 (Z)', key: 'camera.target[2]', min: -10, max: 10 },
   ]
   const getValue = (key: string) => get(props.value, key)
   const createSetter = (key: string) => {
@@ -100,6 +124,18 @@ const Controls: FC<{ value: ThreeArgs; onChange: Updater<ThreeArgs> }> = (
   }
   return (
     <div className='w-max max-h-full overflow-auto flex flex-col p-2 gap-2'>
+      <span className='flex items-center gap-2'>
+        <span>颜色</span>
+        <ColorPicker
+          value={props.value.color}
+          onChange={(val) => {
+            props.onChange((draft) => {
+              draft.color = val.toHexString()
+            })
+          }}
+          showText
+        ></ColorPicker>
+      </span>
       {controls.map((item) => {
         return (
           <span key={item.key} className='flex items-center gap-2'>
@@ -120,18 +156,6 @@ const Controls: FC<{ value: ThreeArgs; onChange: Updater<ThreeArgs> }> = (
           </span>
         )
       })}
-      <span className='flex items-center gap-2'>
-        <span>颜色</span>
-        <ColorPicker
-          value={props.value.color}
-          onChange={(val) => {
-            props.onChange((draft) => {
-              draft.color = val.toHexString()
-            })
-          }}
-          showText
-        ></ColorPicker>
-      </span>
     </div>
   )
 }
@@ -183,6 +207,53 @@ const Axes: FC = () => {
     </>
   )
 }
+
+type CameraControllerRef = {
+  /** 更新摄像机位置 */
+  updateCameraPosition: (val: Camera['position']) => void
+}
+/** 摄像机控制器 */
+const CameraController = forwardRef<
+  CameraControllerRef,
+  {
+    value: Camera
+    onChange: (fn: (draft: Camera) => void) => void
+  }
+>(function InnerCameraController(props, ref) {
+  const { camera } = useThree()
+  const updateCameraPosition = useCallback(
+    (position: Camera['position']) => {
+      camera.position.set(...(position as [number, number, number]))
+      camera.updateProjectionMatrix()
+    },
+    [camera],
+  )
+  const firstRender = useRef(true)
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false
+      updateCameraPosition(props.value.position)
+    }
+  }, [props.value.position, updateCameraPosition])
+  useImperativeHandle(ref, () => ({ updateCameraPosition }))
+  const deboOnChange = debounce(props.onChange, 50)
+  return (
+    <OrbitControls
+      makeDefault
+      target={props.value.target as [number, number, number]}
+      onChange={(e) => {
+        if (!e) return
+        const { position } = e.target.object
+        const target = e.target.target
+        deboOnChange((draft) => {
+          draft.position = [position.x, position.y, position.z]
+          draft.target = [target.x, target.y, target.z]
+        })
+      }}
+    />
+  )
+})
+
 const Page: FC = () => {
   const [args, setArgs] = useImmer<ThreeArgs>({
     scale: 1,
@@ -197,11 +268,19 @@ const Page: FC = () => {
     ambientLightIntensity: 1,
     directionalLightIntensity: 1,
     directionalLightPosition: [0, 0, 5],
+    camera: {
+      position: [0.4, 0.4, 5],
+      target: [0, 0, 0],
+    },
   })
+  const CameraControllerRef = useRef<CameraControllerRef>(null)
+  useEffect(() => {
+    CameraControllerRef.current?.updateCameraPosition(args.camera.position)
+  }, [args.camera.position])
   return (
     <div className={cn(fullContainer, 'overflow-auto')}>
       <div className='flex min-w-[1000px] min-h-[600px] h-full'>
-        <Controls value={args} onChange={setArgs} />
+        <ArgsController value={args} onChange={setArgs} />
         <div className='flex-1'>
           <Canvas>
             <ambientLight intensity={args.ambientLightIntensity} />
@@ -212,8 +291,15 @@ const Page: FC = () => {
               intensity={args.directionalLightIntensity}
             />
             <Axes />
-            {/* 摄像机控制器 */}
-            <OrbitControls />
+            <CameraController
+              ref={CameraControllerRef}
+              value={args.camera}
+              onChange={(fn) => {
+                setArgs((draft) => {
+                  fn(draft.camera)
+                })
+              }}
+            />
             <mesh
               position={args.meshPosition as [number, number, number]}
               scale={args.scale}
