@@ -3,7 +3,6 @@
 import {
   FC,
   forwardRef,
-  ForwardRefExoticComponent,
   useCallback,
   useEffect,
   useImperativeHandle,
@@ -13,7 +12,6 @@ import { Line, Text, OrbitControls } from '@react-three/drei'
 import { Canvas, useThree } from '@react-three/fiber'
 import { Slider, InputNumber, ColorPicker } from 'antd'
 import { debounce, get, set } from 'lodash-es'
-import * as THREE from 'three'
 import { useImmer, Updater } from 'use-immer'
 import { fullContainer } from '@/styles'
 import { cn } from '@/utils/classnames'
