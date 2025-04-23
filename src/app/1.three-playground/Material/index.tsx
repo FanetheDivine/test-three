@@ -45,18 +45,4 @@ export const materialOptions: OptionItem[] = [
     min: 0,
     max: 1,
   },
-  {
-    label: '环境光强度',
-    path: 'ambientLightIntensity',
-    type: 'number',
-    min: 0,
-    max: 10,
-  },
-  {
-    label: '方向光强度',
-    path: 'directionalLightIntensity',
-    type: 'number',
-    min: 0,
-    max: 10,
-  },
 ]
