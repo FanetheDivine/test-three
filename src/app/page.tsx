@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import Link from 'next/link'
 
-const projects = ['1.three-playground']
+const projects = ['1.three-basic']
 
 const Page: FC = () => {
   return (
