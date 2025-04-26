@@ -5,8 +5,8 @@ import { Helper, OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import {
   DirectionalLightHelper,
-  DirectionalLightShadow,
   PointLightHelper,
+  SpotLightHelper,
 } from 'three'
 import { Axes } from '@/components/Axes'
 
@@ -16,9 +16,9 @@ const Page: FC = () => {
       <Axes />
       <OrbitControls />
       <ambientLight></ambientLight>
-      <directionalLight castShadow position={[1, 1, 1]}>
-        <Helper type={DirectionalLightHelper} args={[1, 'red']}></Helper>
-      </directionalLight>
+      <spotLight castShadow intensity={10} position={[1, 1, 1]}>
+        <Helper type={SpotLightHelper} args={['red']}></Helper>
+      </spotLight>
       <mesh castShadow>
         <boxGeometry></boxGeometry>
         <meshPhysicalMaterial color={'red'} />
