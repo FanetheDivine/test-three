@@ -1,0 +1,3 @@
+type SelectCompProps = {
+  value: string
+}

@@ -1,22 +1,10 @@
-import type { OptionItem } from '@/components/ArgsController'
 import { cameraOptions, defaultCamera } from '../CameraController'
 import { defaultGeometry, geometryOptions } from '../Geometry'
 import { defaultLight, lightOptions } from '../Light'
 import { defaultMaterial, materialOptions } from '../Material'
 import { defaultMesh, meshOptions } from '../Mesh'
 
-type _ThreeArgs = ReturnType<typeof _getDefaultThreeArgs>
-type BasicThreeArgs = {
-  [key: string]: {
-    label: string
-    value: any
-    options: OptionItem[]
-  }
-}
-export type ThreeArgs = _ThreeArgs extends BasicThreeArgs ? _ThreeArgs : never
-export const getDefaultThreeArgs: () => ThreeArgs = _getDefaultThreeArgs
-
-function _getDefaultThreeArgs() {
+export function getDefaultThreeArgs() {
   const args = {
     camera: {
       label: '摄像机',

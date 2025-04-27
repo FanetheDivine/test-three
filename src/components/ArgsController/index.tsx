@@ -2,23 +2,11 @@ import { FC } from 'react'
 import { Collapse, ColorPicker, InputNumber, Slider } from 'antd'
 import { get, set } from 'lodash-es'
 import { Updater } from 'use-immer'
+import { ColorComp } from './components/ColorComp'
+import { NumberComp } from './components/NumberComp'
 
-export type OptionItem = {
-  label: string
-  /** lodash get/set函数使用的路径 */
-  path: string
-} & (
-  | {
-      type: 'number'
-      min: number
-      max: number
-    }
-  | {
-      type: 'color'
-    }
-)
-
-type ArgsBisicType = {
+/** 受控参数的类型结构 */
+export type ArgsBisicType = {
   [key: string]: {
     label: string
     value: any
@@ -30,8 +18,7 @@ type ArgsControllerProps<T> = {
   value: T
   onChange: Updater<T>
 }
-
-/** 控制器 */
+/** 参数控制器组件 */
 export function ArgsController<T extends ArgsBisicType>(
   props: ArgsControllerProps<T>,
 ) {
@@ -67,11 +54,31 @@ export function ArgsController<T extends ArgsBisicType>(
   )
 }
 
+export type OptionItem = {
+  label: string
+  /** lodash get/set函数使用的路径 */
+  path: string
+} & (
+  | {
+      type: 'number'
+      min: number
+      max: number
+    }
+  | {
+      type: 'color'
+    }
+  | {
+      type: 'select'
+      options: { value: string; label: string }[]
+    }
+)
+
 type OptionProps = {
   value: any
   option: OptionItem
   onChange: (fn: Updater<any>) => void
 }
+/** 单个参数的控制器 */
 const Option: FC<OptionProps> = (props) => {
   const { option } = props
   const value = get(props.value, option.path)
@@ -101,55 +108,12 @@ const Option: FC<OptionProps> = (props) => {
       />
     )
   }
+  if (option.type === 'select') {
+    return null
+  }
 }
-
-type ColorCompProps = {
-  value: string
-  onChange: (val: string) => void
-}
-const ColorComp: FC<ColorCompProps> = (props) => {
-  return (
-    <span className='flex items-center gap-2'>
-      <span>颜色</span>
-      <ColorPicker
-        value={props.value}
-        onChange={(val) => {
-          props.onChange(val.toHexString())
-        }}
-        showText
-      ></ColorPicker>
-    </span>
-  )
-}
-
-type NumberCompProps = {
-  label: string
-  value: number
-  min: number
-  max: number
-  onChange: (val: number) => void
-}
-const NumberComp: FC<NumberCompProps> = (props) => {
-  return (
-    <span className='flex items-center gap-2'>
-      <span className='w-24'>{props.label}</span>
-      <InputNumber
-        className='w-20'
-        value={props.value}
-        onChange={(val) => {
-          if (val !== null) {
-            props.onChange(val)
-          }
-        }}
-      ></InputNumber>
-      <Slider
-        className='w-80'
-        min={props.min}
-        max={props.max}
-        value={props.value}
-        onChange={props.onChange}
-        step={0.01}
-      ></Slider>
-    </span>
-  )
+/** 所有类型的控制器都具有的参数 */
+export type CompCommonProps = {
+  value: any
+  onChange: (val: any) => void
 }
