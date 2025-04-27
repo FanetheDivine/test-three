@@ -1,13 +1,8 @@
 import { FC } from 'react'
 import { InputNumber, Slider } from 'antd'
-import { CompCommonProps } from '../..'
+import { OptionCompType } from '../../type'
 
-export type NumberCompData = {
-  label: string
-  min: number
-  max: number
-}
-export const NumberComp: FC<CompCommonProps & NumberCompData> = (props) => {
+export const NumberComp: OptionCompType['number'] = (props) => {
   return (
     <span className='flex items-center gap-2'>
       <span className='w-24'>{props.label}</span>
@@ -16,7 +11,7 @@ export const NumberComp: FC<CompCommonProps & NumberCompData> = (props) => {
         value={props.value}
         onChange={(val) => {
           if (val !== null) {
-            props.onChange(val)
+            props.onChange?.(val)
           }
         }}
       ></InputNumber>

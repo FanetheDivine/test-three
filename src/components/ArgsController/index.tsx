@@ -1,27 +1,20 @@
 import { FC } from 'react'
-import { Collapse, ColorPicker, InputNumber, Slider } from 'antd'
+import { Collapse } from 'antd'
 import { get, set } from 'lodash-es'
 import { Updater } from 'use-immer'
 import { ColorComp } from './components/ColorComp'
 import { NumberComp } from './components/NumberComp'
+import { SelectComp } from './components/SelectComp'
+import type { ArgsType, OptionItem } from './type'
 
-/** 受控参数的类型结构 */
-export type ArgsBisicType = {
-  [key: string]: {
-    label: string
-    value: any
-    options: OptionItem[]
-  }
-}
+export type { ArgsType, OptionItem }
 
-type ArgsControllerProps<T> = {
-  value: T
-  onChange: Updater<T>
+export type ArgsControllerProps = {
+  value: ArgsType
+  onChange: Updater<ArgsType>
 }
 /** 参数控制器组件 */
-export function ArgsController<T extends ArgsBisicType>(
-  props: ArgsControllerProps<T>,
-) {
+export function ArgsController(props: ArgsControllerProps) {
   const collapseItems = Object.entries(props.value).map(([key, item]) => {
     return {
       label: item.label,
@@ -54,25 +47,6 @@ export function ArgsController<T extends ArgsBisicType>(
   )
 }
 
-export type OptionItem = {
-  label: string
-  /** lodash get/set函数使用的路径 */
-  path: string
-} & (
-  | {
-      type: 'number'
-      min: number
-      max: number
-    }
-  | {
-      type: 'color'
-    }
-  | {
-      type: 'select'
-      options: { value: string; label: string }[]
-    }
-)
-
 type OptionProps = {
   value: any
   option: OptionItem
@@ -87,33 +61,29 @@ const Option: FC<OptionProps> = (props) => {
       set(draft, option.path, val)
     })
   }
-  if (option.type === 'color') {
-    return (
-      <ColorComp
-        key={option.path}
-        value={value}
-        onChange={onChange}
-      ></ColorComp>
-    )
+  switch (option.type) {
+    case 'color':
+      return <ColorComp value={value} onChange={onChange}></ColorComp>
+    case 'number':
+      return (
+        <NumberComp
+          label={option.label}
+          value={value}
+          onChange={onChange}
+          min={option.min}
+          max={option.max}
+        />
+      )
+    case 'select':
+      return (
+        <SelectComp
+          label={option.label}
+          value={value}
+          onChange={onChange}
+          options={option.options}
+        ></SelectComp>
+      )
+    default:
+      throw new Error('错误的控制器类型')
   }
-  if (option.type === 'number') {
-    return (
-      <NumberComp
-        key={option.path}
-        label={option.label}
-        value={value}
-        onChange={onChange}
-        min={option.min}
-        max={option.max}
-      />
-    )
-  }
-  if (option.type === 'select') {
-    return null
-  }
-}
-/** 所有类型的控制器都具有的参数 */
-export type CompCommonProps = {
-  value: any
-  onChange: (val: any) => void
 }
