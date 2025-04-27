@@ -4,30 +4,15 @@ import { FC, useEffect, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { useImmer } from 'use-immer'
 import { fullContainer } from '@/styles'
+import { ArgsController } from '@/components/ArgsController'
 import { Axes } from '@/components/Axes'
 import { cn } from '@/utils/classnames'
-import { ArgsController } from './ArgsController'
 import { CameraController, CameraControllerRef } from './CameraController'
 import { Geometry } from './Geometry'
 import { Light } from './Light'
 import { Material } from './Material'
 import { Mesh } from './Mesh'
 import { getDefaultThreeArgs } from './ThreeArgs'
-
-export type OptionItem = {
-  label: string
-  /** lodash get/set函数使用的路径 */
-  path: string
-} & (
-  | {
-      type: 'number'
-      min: number
-      max: number
-    }
-  | {
-      type: 'color'
-    }
-)
 
 const Page: FC = () => {
   const [args, setArgs] = useImmer(getDefaultThreeArgs)

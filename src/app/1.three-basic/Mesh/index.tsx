@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren } from 'react'
-import type { OptionItem } from '../page'
+import type { OptionItem } from '@/components/ArgsController'
 
 export type MeshArgs = {
   /** 缩放比，用于控制物体整体的缩放 */

@@ -2,14 +2,39 @@ import { FC } from 'react'
 import { Collapse, ColorPicker, InputNumber, Slider } from 'antd'
 import { get, set } from 'lodash-es'
 import { Updater } from 'use-immer'
-import type { ThreeArgs } from '../ThreeArgs'
-import type { OptionItem } from '../page'
+
+export type OptionItem = {
+  label: string
+  /** lodash get/set函数使用的路径 */
+  path: string
+} & (
+  | {
+      type: 'number'
+      min: number
+      max: number
+    }
+  | {
+      type: 'color'
+    }
+)
+
+type ArgsBisicType = {
+  [key: string]: {
+    label: string
+    value: any
+    options: OptionItem[]
+  }
+}
+
+type ArgsControllerProps<T> = {
+  value: T
+  onChange: Updater<T>
+}
 
 /** 控制器 */
-export const ArgsController: FC<{
-  value: ThreeArgs
-  onChange: Updater<ThreeArgs>
-}> = (props) => {
+export function ArgsController<T extends ArgsBisicType>(
+  props: ArgsControllerProps<T>,
+) {
   const collapseItems = Object.entries(props.value).map(([key, item]) => {
     return {
       label: item.label,
@@ -112,7 +137,7 @@ const NumberComp: FC<NumberCompProps> = (props) => {
         className='w-20'
         value={props.value}
         onChange={(val) => {
-          if (val) {
+          if (val !== null) {
             props.onChange(val)
           }
         }}

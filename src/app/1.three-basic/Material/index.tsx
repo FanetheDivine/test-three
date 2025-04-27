@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import type { OptionItem } from '../page'
+import type { OptionItem } from '@/components/ArgsController'
 
 export type MaterialArgs = {
   /** 颜色，表示材质的颜色值（十六进制字符串，例如 #4096ff） */

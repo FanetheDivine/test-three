@@ -1,9 +1,9 @@
+import type { OptionItem } from '@/components/ArgsController'
 import { cameraOptions, defaultCamera } from '../CameraController'
 import { defaultGeometry, geometryOptions } from '../Geometry'
 import { defaultLight, lightOptions } from '../Light'
 import { defaultMaterial, materialOptions } from '../Material'
 import { defaultMesh, meshOptions } from '../Mesh'
-import type { OptionItem } from '../page'
 
 type _ThreeArgs = ReturnType<typeof _getDefaultThreeArgs>
 type BasicThreeArgs = {

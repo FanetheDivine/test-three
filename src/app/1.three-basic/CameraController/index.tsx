@@ -10,7 +10,7 @@ import {
 import { OrbitControls } from '@react-three/drei'
 import { useThree } from '@react-three/fiber'
 import { debounce } from 'lodash-es'
-import type { OptionItem } from '../page'
+import type { OptionItem } from '@/components/ArgsController'
 
 export type CameraArgs = {
   /** 摄像头位置 */

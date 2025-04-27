@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { OptionItem } from '../page'
+import { OptionItem } from '@/components/ArgsController'
 
 export type LightArgs = {
   /** 环境光 */
