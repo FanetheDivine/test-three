@@ -1,6 +1,7 @@
 'use client'
 
-import { Radio } from 'antd'
+import { Radio, Select } from 'antd'
+import { cn } from '@/utils/classnames'
 import { ArgCompMap } from '../..'
 
 declare module '../..' {
@@ -13,21 +14,14 @@ declare module '../..' {
 
 export const SelectComp: ArgCompMap['select'] = (props) => {
   return (
-    <div className='flex flex-col'>
+    <div className={cn('flex gap-2', props.className)} style={props.style}>
       {props.label}
-      <Radio.Group
+      <Select
+        className='flex-1'
         value={props.value}
-        onChange={(e) => props.onChange?.(e.target.value)}
-        className='ml-4 flex flex-col'
-      >
-        {props.options.map((item) => {
-          return (
-            <Radio key={item.value} value={item.value}>
-              {item.label}
-            </Radio>
-          )
-        })}
-      </Radio.Group>
+        options={props.options}
+        onSelect={(val) => props.onChange?.(val)}
+      ></Select>
     </div>
   )
 }
