@@ -14,7 +14,7 @@ declare module '../..' {
 export const SelectComp: ArgCompMap['select'] = (props) => {
   return (
     <div className='flex flex-col'>
-      <span className='text-lg'>{props.label}</span>
+      {props.label}
       <Radio.Group
         value={props.value}
         onChange={(e) => props.onChange?.(e.target.value)}
