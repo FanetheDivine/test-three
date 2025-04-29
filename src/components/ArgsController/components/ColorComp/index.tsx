@@ -7,10 +7,10 @@ import { ArgCompMap } from '../..'
 export const ColorComp: ArgCompMap['color'] = (props) => {
   return (
     <span
-      className={cn('flex items-center gap-2 cursor-auto', props.className)}
+      className={cn('flex items-center gap-2', props.className)}
       style={props.style}
     >
-      <span className='text-black'>{props.label}</span>
+      {props.label}
       <ColorPicker
         className={cn('inline-flex', props.className)}
         style={props.style}

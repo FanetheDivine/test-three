@@ -13,10 +13,10 @@ declare module '../..' {
 export const SwitchComp: ArgCompMap['switch'] = (props) => {
   return (
     <span
-      className={cn('flex items-center gap-2 cursor-auto', props.className)}
+      className={cn('flex items-center gap-2', props.className)}
       style={props.style}
     >
-      <span className='text-black'>{props.label}</span>
+      {props.label}
       <Switch checked={props.value} onChange={props.onChange}></Switch>
     </span>
   )

@@ -7,10 +7,10 @@ import { ArgCompMap } from '../..'
 export const NumberComp: ArgCompMap['number'] = (props) => {
   return (
     <span
-      className={cn('flex flex-col gap-2 cursor-auto', props.className)}
+      className={cn('flex flex-col gap-2', props.className)}
       style={props.style}
     >
-      <span className='text-black'>{props.label}</span>
+      {props.label}
       <span className='flex items-center gap-2'>
         <InputNumber
           value={props.value}

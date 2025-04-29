@@ -6,6 +6,7 @@ import { produce } from 'immer'
 import { get, set } from 'lodash-es'
 import { create } from 'zustand'
 import { ArgItem } from './ArgItem'
+import styles from './styles.module.css'
 import { ArgCompMap, ArgOptionType, ArgTypeMap } from './type'
 
 export type { ArgOptionType, ArgTypeMap, ArgCompMap }
@@ -123,6 +124,7 @@ export function createArgsController<T>(defaultValue: T) {
           key: currentKey,
           showArrow: option.type === 'group',
           collapsible: children ? undefined : 'disabled',
+          className: option.type === 'group' ? '' : styles.isOption,
         }
       })
       return res
