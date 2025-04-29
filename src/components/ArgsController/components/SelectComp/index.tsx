@@ -8,7 +8,7 @@ import { ArgCompMap } from '../..'
 declare module '../..' {
   interface ArgTypeMap {
     select: {
-      options: { label: ReactNode; value: string }[]
+      options: { label: ReactNode; value: any }[]
     }
   }
 }
