@@ -7,6 +7,6 @@ export const defaultArgs = {
   light: defaultLight,
 }
 export const argOptions: ArgOptionType[] = [
-  { type: 'group', key: 'material', label: '材质', children: materialOptions },
   { type: 'group', key: 'light', label: '光照', children: lightOptions },
+  { type: 'group', key: 'material', label: '材质', children: materialOptions },
 ]

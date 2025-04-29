@@ -1,76 +1,87 @@
-import { FC, RefObject, useRef } from 'react'
+import { FC, RefObject, useCallback, useRef } from 'react'
 import { Helper } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
-import { DirectionalLightHelper, Mesh, Object3D, Vector3 } from 'three'
-import { ArgOptionType } from '@/components/ArgsController'
+import {
+  DirectionalLightHelper,
+  HemisphereLightHelper,
+  Mesh,
+  Object3D,
+  PointLightHelper,
+  SpotLightHelper,
+  Vector3,
+} from 'three'
+import { RectAreaLightHelper } from 'three/addons/helpers/RectAreaLightHelper.js'
+import { LightArgs } from './type'
 
-export type LightArgs = {
-  /** 方向光 */
-  directionalLight: {
-    /** 强度 */
-    intensity: number
-    /** 位置 */
-    position: [number, number, number]
-  }
-}
+export { defaultLight, lightOptions } from './args'
+
 export const Light: FC<{ value: LightArgs; meshRef: RefObject<Mesh> }> = (
   props,
 ) => {
-  const lightRef = useRef<Object3D>()
-  useFrame(() => {
-    if (lightRef.current && props.meshRef.current) {
-      lightRef.current?.lookAt(
-        props.meshRef.current.getWorldPosition(new Vector3()),
-      )
-    }
-  })
+  const { lightRefFn } = useLookAt(props.meshRef)
+  const {
+    ambientLight,
+    directionalLight,
+    pointLight,
+    spotLight,
+    rectAreaLight,
+    hemisphereLight,
+  } = props.value
   return (
-    <directionalLight
-      ref={(el) => {
-        if (el) {
-          lightRef.current = el
-        }
-      }}
-      position={props.value.directionalLight.position}
-      intensity={props.value.directionalLight.intensity}
-    >
-      <Helper type={DirectionalLightHelper} args={[0.5, 'black']}></Helper>
-    </directionalLight>
+    <>
+      <ambientLight
+        castShadow
+        ref={lightRefFn}
+        {...ambientLight}
+      ></ambientLight>
+      <directionalLight castShadow ref={lightRefFn} {...directionalLight}>
+        {directionalLight.visible ? (
+          <Helper type={DirectionalLightHelper} args={[0.5, 'red']}></Helper>
+        ) : null}
+      </directionalLight>
+      <pointLight castShadow ref={lightRefFn} {...pointLight}>
+        {pointLight.visible ? (
+          <Helper type={PointLightHelper} args={[0.5, 'red']}></Helper>
+        ) : null}
+      </pointLight>
+      <spotLight castShadow ref={lightRefFn} {...spotLight}>
+        {spotLight.visible ? (
+          <Helper type={SpotLightHelper} args={['red']}></Helper>
+        ) : null}
+      </spotLight>
+      <rectAreaLight castShadow ref={lightRefFn} {...rectAreaLight}>
+        {rectAreaLight.visible ? (
+          <Helper type={RectAreaLightHelper} args={['red']}></Helper>
+        ) : null}
+      </rectAreaLight>
+      <hemisphereLight castShadow ref={lightRefFn} {...hemisphereLight}>
+        {hemisphereLight.visible ? (
+          <Helper type={HemisphereLightHelper} args={[0.5, 'red']}></Helper>
+        ) : null}
+      </hemisphereLight>
+    </>
   )
 }
-export const defaultLight: LightArgs = {
-  directionalLight: {
-    intensity: 10,
-    position: [1, 1, 2],
-  },
+
+function useLookAt(meshRef: RefObject<Mesh>) {
+  const lightSet = useRef<Set<Object3D>>()
+  const lightRefFn = useCallback((el?: Object3D | null) => {
+    if (!lightSet.current) {
+      lightSet.current = new Set<Object3D>()
+    }
+    if (el) {
+      lightSet.current.add(el)
+      return () => {
+        lightSet.current?.delete(el)
+      }
+    }
+  }, [])
+  useFrame(() => {
+    if (!meshRef.current) return
+    const target = meshRef.current.getWorldPosition(new Vector3())
+    lightSet.current?.forEach((light) => {
+      light.lookAt(target)
+    })
+  })
+  return { lightRefFn }
 }
-export const lightOptions: ArgOptionType[] = [
-  {
-    label: '方向光强度',
-    key: ['directionalLight', 'intensity'],
-    type: 'number',
-    min: 0,
-    max: 10,
-  },
-  {
-    label: '方向光位置 (X)',
-    key: ['directionalLight', 'position', '0'],
-    type: 'number',
-    min: -10,
-    max: 10,
-  },
-  {
-    label: '方向光位置 (Y)',
-    key: ['directionalLight', 'position', '1'],
-    type: 'number',
-    min: -10,
-    max: 10,
-  },
-  {
-    label: '方向光位置 (Z)',
-    key: ['directionalLight', 'position', '2'],
-    type: 'number',
-    min: -10,
-    max: 10,
-  },
-]
