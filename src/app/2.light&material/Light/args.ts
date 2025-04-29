@@ -1,7 +1,7 @@
 import { ArgOptionType } from '@/components/ArgsController'
 import { LightArgs } from './type'
 
-const position: [number, number, number] = [1, 1, 2]
+const position: [number, number, number] = [-0.5, 0, 2]
 const color = '#FFFFFF'
 
 export const defaultLight: LightArgs = {

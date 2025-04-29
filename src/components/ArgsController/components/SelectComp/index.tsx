@@ -1,7 +1,7 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { Radio, Select } from 'antd'
+import { Select } from 'antd'
 import { cn } from '@/utils/classnames'
 import { ArgCompMap } from '../..'
 

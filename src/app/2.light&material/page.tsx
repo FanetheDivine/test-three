@@ -11,12 +11,12 @@ import { Axes } from '@/components/Axes'
 import { cn } from '@/utils/classnames'
 import { Light } from './Light'
 import { Material } from './Material'
-import { argOptions, defaultArgs } from './ThreeArgs'
+import { useArgOptions, defaultArgs } from './ThreeArgs'
 
 const { ArgsController, useArgs } = createArgsController(defaultArgs)
 const Page: FC = () => {
   const [args] = useArgs()
-  const [options, setOptions] = useImmer(argOptions)
+  const options = useArgOptions(args)
   const meshRef = useRef<Mesh>(null)
   return (
     <div className={cn(fullContainer, 'overflow-auto')}>
@@ -26,16 +26,13 @@ const Page: FC = () => {
           options={options}
         />
         <div className='flex-1'>
-          <Canvas shadows camera={{ position: [1, 3, 8] }}>
+          <Canvas shadows camera={{ position: [0.5, 0.5, 3] }}>
             <Axes />
             <OrbitControls enableDamping={false} />
             <Light meshRef={meshRef} value={args.light}></Light>
             <mesh castShadow ref={meshRef}>
               <boxGeometry args={[2, 2, 2]}></boxGeometry>
-              <Material
-                value={args.material}
-                setOptions={setOptions}
-              ></Material>
+              <Material value={args.material}></Material>
             </mesh>
             <mesh
               receiveShadow
