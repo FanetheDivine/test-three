@@ -25,7 +25,7 @@ const Page: FC = () => {
     <div className={cn(fullContainer, 'overflow-auto')}>
       <div className='flex min-w-[1000px] min-h-[600px] h-full'>
         <ArgsController
-          className='w-[600px] max-h-full overflow-auto'
+          className='w-[300px] max-h-full overflow-auto'
           options={argOptions}
         />
         <div className='flex-1'>
