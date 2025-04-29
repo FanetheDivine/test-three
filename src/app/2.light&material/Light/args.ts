@@ -47,7 +47,7 @@ export const defaultLight: LightArgs = {
     intensity: 1,
     color,
     position,
-    groundColor: 'ff00ff',
+    groundColor: '#ff00ff',
   },
 }
 

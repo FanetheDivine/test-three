@@ -29,17 +29,13 @@ export const Light: FC<{ value: LightArgs; meshRef: RefObject<Mesh> }> = (
   } = props.value
   return (
     <>
-      <ambientLight
-        castShadow
-        ref={lightRefFn}
-        {...ambientLight}
-      ></ambientLight>
+      <ambientLight {...ambientLight}></ambientLight>
       <directionalLight castShadow ref={lightRefFn} {...directionalLight}>
         {directionalLight.visible ? (
           <Helper type={DirectionalLightHelper} args={[0.5, 'red']}></Helper>
         ) : null}
       </directionalLight>
-      <pointLight castShadow ref={lightRefFn} {...pointLight}>
+      <pointLight castShadow {...pointLight}>
         {pointLight.visible ? (
           <Helper type={PointLightHelper} args={[0.5, 'red']}></Helper>
         ) : null}
@@ -54,7 +50,7 @@ export const Light: FC<{ value: LightArgs; meshRef: RefObject<Mesh> }> = (
           <Helper type={RectAreaLightHelper} args={['red']}></Helper>
         ) : null}
       </rectAreaLight>
-      <hemisphereLight castShadow ref={lightRefFn} {...hemisphereLight}>
+      <hemisphereLight {...hemisphereLight}>
         {hemisphereLight.visible ? (
           <Helper type={HemisphereLightHelper} args={[0.5, 'red']}></Helper>
         ) : null}
@@ -71,9 +67,6 @@ function useLookAt(meshRef: RefObject<Mesh>) {
     }
     if (el) {
       lightSet.current.add(el)
-      return () => {
-        lightSet.current?.delete(el)
-      }
     }
   }, [])
   useFrame(() => {
