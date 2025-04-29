@@ -17,7 +17,7 @@ export interface ArgTypeMap {
 
 /** 配置项类型 */
 export type ArgOptionType = {
-  label: string
+  label: ReactNode
   key: string | string[]
 } & ArgOptionMap[keyof ArgOptionMap]
 
