@@ -7,26 +7,28 @@ import { ArgCompMap } from '../..'
 export const NumberComp: ArgCompMap['number'] = (props) => {
   return (
     <span
-      className={cn('flex items-center gap-2', props.className)}
+      className={cn('flex flex-col gap-2 cursor-auto', props.className)}
       style={props.style}
     >
-      <InputNumber
-        className='w-20'
-        value={props.value}
-        onChange={(val) => {
-          if (val !== null) {
-            props.onChange?.(val)
-          }
-        }}
-      ></InputNumber>
-      <Slider
-        className='w-80'
-        min={props.min}
-        max={props.max}
-        value={props.value}
-        onChange={props.onChange}
-        step={0.01}
-      ></Slider>
+      <span className='text-black'>{props.label}</span>
+      <span className='flex items-center gap-2'>
+        <InputNumber
+          value={props.value}
+          onChange={(val) => {
+            if (val !== null) {
+              props.onChange?.(val)
+            }
+          }}
+        ></InputNumber>
+        <Slider
+          className='flex-1'
+          min={props.min}
+          max={props.max}
+          value={props.value}
+          onChange={props.onChange}
+          step={0.01}
+        ></Slider>
+      </span>
     </span>
   )
 }

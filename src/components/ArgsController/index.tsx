@@ -86,22 +86,28 @@ export function createArgsController<T>(defaultValue: T) {
     style?: CSSProperties
   }> = memo(function ArgsControllerInner(props) {
     const { parentPath, options } = props
-    const collapseItems: CollapseProps['items'] = useMemo(() => {
-      const res = options.map((option) => {
+    const collapseItems = useMemo(() => {
+      const res: CollapseProps['items'] = options.map((option) => {
         const currentPath = (parentPath ?? []).concat(option.key)
         const currentKey = currentPath.join('.')
         const children = (() => {
+          if (
+            option.type === 'group' &&
+            option.children &&
+            option.children.length > 0
+          ) {
+            return (
+              <ArgsController
+                options={option.children}
+                parentPath={currentPath}
+              ></ArgsController>
+            )
+          }
+          return null
+        })()
+        const label = (() => {
           if (option.type === 'group') {
-            if (!option.children || option.children.length === 0) {
-              return null
-            } else {
-              return (
-                <ArgsController
-                  options={option.children}
-                  parentPath={currentPath}
-                ></ArgsController>
-              )
-            }
+            return option.label
           }
           return (
             <ArgController
@@ -112,9 +118,11 @@ export function createArgsController<T>(defaultValue: T) {
           )
         })()
         return {
-          label: option.label,
-          key: currentKey,
+          label,
           children,
+          key: currentKey,
+          showArrow: option.type === 'group',
+          collapsible: children ? undefined : 'disabled',
         }
       })
       return res
