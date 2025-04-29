@@ -41,7 +41,6 @@ const Page: FC = () => {
                 })
               }}
             />
-
             <Mesh value={args.mesh}>
               <Geometry value={args.geometry} />
               <Material value={args.material} />
