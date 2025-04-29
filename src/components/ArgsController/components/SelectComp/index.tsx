@@ -15,7 +15,10 @@ declare module '../..' {
 
 export const SelectComp: ArgCompMap['select'] = (props) => {
   return (
-    <div className={cn('flex gap-2', props.className)} style={props.style}>
+    <div
+      className={cn('flex items-center gap-2 flex-wrap', props.className)}
+      style={props.style}
+    >
       {props.label}
       <Select
         className='flex-1'
