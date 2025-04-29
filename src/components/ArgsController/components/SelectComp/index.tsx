@@ -1,5 +1,6 @@
 'use client'
 
+import { ReactNode } from 'react'
 import { Radio, Select } from 'antd'
 import { cn } from '@/utils/classnames'
 import { ArgCompMap } from '../..'
@@ -7,7 +8,7 @@ import { ArgCompMap } from '../..'
 declare module '../..' {
   interface ArgTypeMap {
     select: {
-      options: { label: string; value: string }[]
+      options: { label: ReactNode; value: string }[]
     }
   }
 }

@@ -1,4 +1,4 @@
-import { CSSProperties, FC } from 'react'
+import { CSSProperties, FC, ReactNode } from 'react'
 
 /** 参数控制器种类及其携带的额外数据 */
 export interface ArgTypeMap {
@@ -33,7 +33,7 @@ export type ArgCompMap = {
     {
       className?: string
       style?: CSSProperties
-      label?: string
+      label?: ReactNode
       value?: any
       onChange?: (val: any) => void
     } & ArgTypeMap[key]
