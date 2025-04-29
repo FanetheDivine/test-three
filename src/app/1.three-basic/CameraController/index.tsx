@@ -10,7 +10,7 @@ import {
 import { OrbitControls } from '@react-three/drei'
 import { useThree } from '@react-three/fiber'
 import { debounce } from 'lodash-es'
-import type { OptionItem } from '../page'
+import type { ArgOptionType } from '@/components/ArgsController'
 
 export type CameraArgs = {
   /** 摄像头位置 */
@@ -77,45 +77,45 @@ export const defaultCamera: CameraArgs = {
   target: [0, 0, 0],
 }
 
-export const cameraOptions: OptionItem[] = [
+export const cameraOptions: ArgOptionType[] = [
   {
     label: '摄像机位置 (X)',
-    path: 'position[0]',
+    key: ['position', '0'],
     type: 'number',
     min: -10,
     max: 10,
   },
   {
     label: '摄像机位置 (Y)',
-    path: 'position[1]',
+    key: ['position', '1'],
     type: 'number',
     min: -10,
     max: 10,
   },
   {
     label: '摄像机位置 (Z)',
-    path: 'position[2]',
+    key: ['position', '2'],
     type: 'number',
     min: -10,
     max: 10,
   },
   {
     label: '摄像机注视点 (X)',
-    path: 'target[0]',
+    key: ['target', '0'],
     type: 'number',
     min: -10,
     max: 10,
   },
   {
     label: '摄像机注视点 (Y)',
-    path: 'target[1]',
+    key: ['target', '1'],
     type: 'number',
     min: -10,
     max: 10,
   },
   {
     label: '摄像机注视点 (Z)',
-    path: 'target[2]',
+    key: ['target', '2'],
     type: 'number',
     min: -10,
     max: 10,

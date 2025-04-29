@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import type { OptionItem } from '../page'
+import type { ArgOptionType } from '@/components/ArgsController'
 
 export type MaterialArgs = {
   /** 颜色，表示材质的颜色值（十六进制字符串，例如 #4096ff） */
@@ -33,14 +33,14 @@ export const defaultMaterial: MaterialArgs = {
   clearcoatRoughness: 0.1,
 }
 
-export const materialOptions: OptionItem[] = [
-  { label: '颜色', path: 'color', type: 'color' },
-  { label: '粗糙度', path: 'roughness', type: 'number', min: 0, max: 1 },
-  { label: '金属度', path: 'metalness', type: 'number', min: 0, max: 1 },
-  { label: '清漆强度', path: 'clearcoat', type: 'number', min: 0, max: 1 },
+export const materialOptions: ArgOptionType[] = [
+  { label: '颜色', key: 'color', type: 'color' },
+  { label: '粗糙度', key: 'roughness', type: 'number', min: 0, max: 1 },
+  { label: '金属度', key: 'metalness', type: 'number', min: 0, max: 1 },
+  { label: '清漆强度', key: 'clearcoat', type: 'number', min: 0, max: 1 },
   {
     label: '清漆粗糙度',
-    path: 'clearcoatRoughness',
+    key: 'clearcoatRoughness',
     type: 'number',
     min: 0,
     max: 1,

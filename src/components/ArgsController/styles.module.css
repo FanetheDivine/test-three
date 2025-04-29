@@ -1,0 +1,4 @@
+.isOption > :global(.ant-collapse-header.ant-collapse-collapsible-disabled) {
+  cursor: auto;
+  color: inherit;
+}

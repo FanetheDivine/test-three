@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { OptionItem } from '../page'
+import { ArgOptionType } from '@/components/ArgsController'
 
 export type LightArgs = {
   /** 环境光 */
@@ -35,38 +35,38 @@ export const defaultLight: LightArgs = {
     position: [0, 0, 5],
   },
 }
-export const lightOptions: OptionItem[] = [
+export const lightOptions: ArgOptionType[] = [
   {
     label: '环境光强度',
-    path: 'ambientLight.intensity',
+    key: ['ambientLight', 'intensity'],
     type: 'number',
     min: 0,
     max: 10,
   },
   {
     label: '方向光强度',
-    path: 'directionalLight.intensity',
+    key: ['directionalLight', 'intensity'],
     type: 'number',
     min: 0,
     max: 10,
   },
   {
     label: '方向光位置 (X)',
-    path: 'directionalLight.position[0]',
+    key: ['directionalLight', 'position', '0'],
     type: 'number',
     min: -10,
     max: 10,
   },
   {
     label: '方向光位置 (Y)',
-    path: 'directionalLight.position[1]',
+    key: ['directionalLight', 'position', '1'],
     type: 'number',
     min: -10,
     max: 10,
   },
   {
     label: '方向光位置 (Z)',
-    path: 'directionalLight.position[2]',
+    key: ['directionalLight', 'position', '2'],
     type: 'number',
     min: -10,
     max: 10,

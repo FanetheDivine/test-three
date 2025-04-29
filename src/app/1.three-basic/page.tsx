@@ -2,61 +2,48 @@
 
 import { FC, useEffect, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { useImmer } from 'use-immer'
 import { fullContainer } from '@/styles'
+import { createArgsController } from '@/components/ArgsController'
+import { Axes } from '@/components/Axes'
 import { cn } from '@/utils/classnames'
-import { ArgsController } from './ArgsController'
-import { Axes } from './Axes'
 import { CameraController, CameraControllerRef } from './CameraController'
 import { Geometry } from './Geometry'
 import { Light } from './Light'
 import { Material } from './Material'
 import { Mesh } from './Mesh'
-import { getDefaultThreeArgs } from './ThreeArgs'
+import { argOptions, defaultArgs } from './ThreeArgs'
 
-export type OptionItem = {
-  label: string
-  /** lodash get/set函数使用的路径 */
-  path: string
-} & (
-  | {
-      type: 'number'
-      min: number
-      max: number
-    }
-  | {
-      type: 'color'
-    }
-)
+const { ArgsController, useArgs } = createArgsController(defaultArgs)
 
 const Page: FC = () => {
-  const [args, setArgs] = useImmer(getDefaultThreeArgs)
+  const [args, setArgs] = useArgs()
   const CameraControllerRef = useRef<CameraControllerRef>(null)
   useEffect(() => {
-    CameraControllerRef.current?.updateCameraPosition(
-      args.camera.value.position,
-    )
-  }, [args.camera.value.position])
+    CameraControllerRef.current?.updateCameraPosition(args.camera.position)
+  }, [args.camera.position])
   return (
     <div className={cn(fullContainer, 'overflow-auto')}>
       <div className='flex min-w-[1000px] min-h-[600px] h-full'>
-        <ArgsController value={args} onChange={setArgs} />
+        <ArgsController
+          className='w-[300px] max-h-full overflow-auto'
+          options={argOptions}
+        />
         <div className='flex-1'>
           <Canvas>
-            <Light value={args.light.value} />
             <Axes />
+            <Light value={args.light} />
             <CameraController
               ref={CameraControllerRef}
-              value={args.camera.value}
+              value={args.camera}
               onChange={(fn) => {
                 setArgs((draft) => {
-                  fn(draft.camera.value)
+                  fn(draft.camera)
                 })
               }}
             />
-            <Mesh value={args.mesh.value}>
-              <Geometry value={args.geometry.value} />
-              <Material value={args.material.value} />
+            <Mesh value={args.mesh}>
+              <Geometry value={args.geometry} />
+              <Material value={args.material} />
             </Mesh>
           </Canvas>
         </div>

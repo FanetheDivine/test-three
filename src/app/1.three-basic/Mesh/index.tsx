@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren } from 'react'
-import type { OptionItem } from '../page'
+import type { ArgOptionType } from '@/components/ArgsController'
 
 export type MeshArgs = {
   /** 缩放比，用于控制物体整体的缩放 */
@@ -27,46 +27,46 @@ export const defaultMesh: MeshArgs = {
   position: [0, 0, 0],
 }
 
-export const meshOptions: OptionItem[] = [
-  { label: '缩放比', path: 'scale', type: 'number', min: 0.5, max: 3 },
+export const meshOptions: ArgOptionType[] = [
+  { label: '缩放比', key: 'scale', type: 'number', min: 0.5, max: 3 },
   {
     label: '位置 (X)',
-    path: 'position[0]',
+    key: ['position', '0'],
     type: 'number',
     min: -10,
     max: 10,
   },
   {
     label: '位置 (Y)',
-    path: 'position[1]',
+    key: ['position', '1'],
     type: 'number',
     min: -10,
     max: 10,
   },
   {
     label: '位置 (Z)',
-    path: 'position[2]',
+    key: ['position', '2'],
     type: 'number',
     min: -10,
     max: 10,
   },
   {
     label: '旋转角度 (X)',
-    path: 'rotation[0]',
+    key: ['rotation', '0'],
     type: 'number',
     min: -Math.PI * 2,
     max: Math.PI * 2,
   },
   {
     label: '旋转角度 (Y)',
-    path: 'rotation[1]',
+    key: ['rotation', '1'],
     type: 'number',
     min: -Math.PI * 2,
     max: Math.PI * 2,
   },
   {
     label: '旋转角度 (Z)',
-    path: 'rotation[2]',
+    key: ['rotation', '2'],
     type: 'number',
     min: -Math.PI * 2,
     max: Math.PI * 2,
