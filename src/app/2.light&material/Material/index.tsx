@@ -1,7 +1,8 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import type { ArgOptionType } from '@/components/ArgsController'
 
 export type MaterialArgs = {
+  type: 'a' | 'b'
   /** 颜色，表示材质的颜色值（十六进制字符串，例如 #4096ff） */
   color: string
   /** 粗糙度，控制材质表面的光滑程度，范围为 0（光滑）到 1（粗糙） */
@@ -13,19 +14,28 @@ export type MaterialArgs = {
   /** 清漆粗糙度，控制清漆表面的粗糙程度，范围为 0（光滑）到 1（粗糙） */
   clearcoatRoughness: number
 }
-export const Material: FC<{ value: MaterialArgs }> = (props) => {
+export const Material: FC<{
+  value: MaterialArgs
+  setOptions: (fn: (draft: ArgOptionType[]) => void) => void
+}> = (props) => {
+  const { type, color, roughness, metalness, clearcoat, clearcoatRoughness } =
+    props.value
+  useEffect(() => {
+    console.log(type)
+  }, [type, props.setOptions])
   return (
     <meshPhysicalMaterial
-      color={props.value.color}
-      roughness={props.value.roughness}
-      metalness={props.value.metalness}
-      clearcoat={props.value.clearcoat}
-      clearcoatRoughness={props.value.clearcoatRoughness}
+      color={color}
+      roughness={roughness}
+      metalness={metalness}
+      clearcoat={clearcoat}
+      clearcoatRoughness={clearcoatRoughness}
     />
   )
 }
 
 export const defaultMaterial: MaterialArgs = {
+  type: 'a',
   color: '#4096ff',
   roughness: 0.5,
   metalness: 0.8,
@@ -34,6 +44,15 @@ export const defaultMaterial: MaterialArgs = {
 }
 
 export const materialOptions: ArgOptionType[] = [
+  {
+    label: '种类',
+    key: 'type',
+    type: 'select',
+    options: [
+      { value: 'a', label: 'a' },
+      { value: 'b', label: 'b' },
+    ],
+  },
   { label: '颜色', key: 'color', type: 'color' },
   { label: '粗糙度', key: 'roughness', type: 'number', min: 0, max: 1 },
   { label: '金属度', key: 'metalness', type: 'number', min: 0, max: 1 },
