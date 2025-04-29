@@ -23,7 +23,8 @@ const Page: FC = () => {
       <Light meshRef={meshRef}></Light>
       <mesh castShadow ref={meshRef}>
         <boxGeometry></boxGeometry>
-        <Material></Material>
+        {/* <Material></Material> */}
+        <meshPhysicalMaterial color={'red'}></meshPhysicalMaterial>
       </mesh>
       <mesh receiveShadow position={[0, -1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[10, 10]} />

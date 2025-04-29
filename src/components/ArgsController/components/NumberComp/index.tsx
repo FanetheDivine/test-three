@@ -1,11 +1,15 @@
-import { FC } from 'react'
-import { InputNumber, Slider } from 'antd'
-import { OptionCompType } from '../../type'
+'use client'
 
-export const NumberComp: OptionCompType['number'] = (props) => {
+import { InputNumber, Slider } from 'antd'
+import { cn } from '@/utils/classnames'
+import { ArgCompMap } from '../..'
+
+export const NumberComp: ArgCompMap['number'] = (props) => {
   return (
-    <span className='flex items-center gap-2'>
-      <span className='w-24'>{props.label}</span>
+    <span
+      className={cn('flex items-center gap-2', props.className)}
+      style={props.style}
+    >
       <InputNumber
         className='w-20'
         value={props.value}

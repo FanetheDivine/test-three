@@ -1,20 +1,19 @@
-import { FC } from 'react'
+'use client'
+
 import { ColorPicker } from 'antd'
-import { OptionCompType } from '../../type'
+import { cn } from '@/utils/classnames'
+import { ArgCompMap } from '../..'
 
-export type ColorCompData = {}
-
-export const ColorComp: OptionCompType['color'] = (props) => {
+export const ColorComp: ArgCompMap['color'] = (props) => {
   return (
-    <span className='flex items-center gap-2'>
-      <span>颜色</span>
-      <ColorPicker
-        value={props.value}
-        onChange={(val) => {
-          props.onChange?.(val.toHexString())
-        }}
-        showText
-      ></ColorPicker>
-    </span>
+    <ColorPicker
+      className={cn('inline-flex', props.className)}
+      style={props.style}
+      value={props.value}
+      onChange={(val) => {
+        props.onChange?.(val.toHexString())
+      }}
+      showText
+    ></ColorPicker>
   )
 }

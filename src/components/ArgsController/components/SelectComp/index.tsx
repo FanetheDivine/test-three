@@ -1,7 +1,17 @@
-import { Radio } from 'antd'
-import { OptionCompType } from '../../type'
+'use client'
 
-export const SelectComp: OptionCompType['select'] = (props) => {
+import { Radio } from 'antd'
+import { ArgCompMap } from '../..'
+
+declare module '../..' {
+  interface ArgTypeMap {
+    select: {
+      options: { label: string; value: string }[]
+    }
+  }
+}
+
+export const SelectComp: ArgCompMap['select'] = (props) => {
   return (
     <div className='flex flex-col'>
       <span className='text-xl'>{props.label}</span>
