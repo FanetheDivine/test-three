@@ -45,10 +45,4 @@ type MaterialPropsMap = {
    * 适合玻璃、水等复杂材质。
    */
   MeshPhysicalMaterial: MeshPhysicalMaterialProps
-
-  /**
-   * 卡通渲染材质。
-   * 光照会分段，适合动漫、手绘风格。
-   */
-  MeshToonMaterial: MeshToonMaterialProps
 }

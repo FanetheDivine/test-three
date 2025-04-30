@@ -1,7 +1,7 @@
+import { useMemo } from 'react'
 import { ArgOptionType } from '@/components/ArgsController/type'
 import { defaultLight, lightOptions } from '../Light'
 import { defaultMaterial, useMaterialOptions } from '../Material'
-import { useMemo } from 'react'
 
 export const defaultArgs = {
   material: defaultMaterial,
@@ -12,7 +12,12 @@ export function useArgOptions(args: typeof defaultArgs) {
   const options: ArgOptionType[] = useMemo(() => {
     return [
       { type: 'group', key: 'light', label: '光照', children: lightOptions },
-      { type: 'group', key: 'material', label: '材质', children: materialOptions },
+      {
+        type: 'group',
+        key: 'material',
+        label: '材质',
+        children: materialOptions,
+      },
     ]
   }, [materialOptions])
   return options

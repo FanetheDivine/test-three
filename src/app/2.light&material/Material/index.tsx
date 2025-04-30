@@ -28,8 +28,6 @@ export const Material: FC<{
       return <meshStandardMaterial {...value}></meshStandardMaterial>
     case 'MeshPhysicalMaterial':
       return <meshPhysicalMaterial {...value}></meshPhysicalMaterial>
-    case 'MeshToonMaterial':
-      return <meshToonMaterial {...value}></meshToonMaterial>
     default:
       throw new Error('材质种类错误')
   }
