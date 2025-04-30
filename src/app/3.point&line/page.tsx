@@ -1,23 +1,21 @@
 'use client'
 
-import React from 'react'
-import { OrbitControls, Points } from '@react-three/drei'
+import React, { useState } from 'react'
+import { useGSAP } from '@gsap/react'
+import { Points } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import { Axes } from '@/components/Axes'
-
-const positions: number[][] = new Array(10000).fill(null).map((_, index) => {
-  return new Array(3)
-    .fill(null)
-    .map(() => ((Math.random() - 0.5) * index) / 100)
-})
-const positionBuffer = new Float32Array(positions.flat())
+import { positionBuffer } from './positions'
 
 export default function PointsAndLines() {
+  const [rotationZ, setZ] = useState(0)
+  useGSAP(() => {
+    setZ(rotationZ + Math.PI / 40)
+  })
   return (
-    <Canvas>
-      <Axes />
-      <OrbitControls />
-      <Points limit={1000} positions={positionBuffer}>
+    <Canvas camera={{ position: [0, 0, 10] }}>
+      {/* <Axes /> */}
+      {/* <OrbitControls /> */}
+      <Points rotation={[0, 0, rotationZ]} positions={positionBuffer}>
         <pointsMaterial color={'#4096ff'} size={0.05} />
       </Points>
     </Canvas>
